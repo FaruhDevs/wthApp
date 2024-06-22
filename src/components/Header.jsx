@@ -7,6 +7,7 @@ function Header() {
         <p className='text-slate-300 text-xs md:text-sm font-semibold'>2024-06-20 11:46 GMT</p>
         <i className="fa-brands fa-github md:text-2xl text-xl text-white"></i>
     </div>
+    
   )
 }
 
