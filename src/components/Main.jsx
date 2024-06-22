@@ -1,5 +1,5 @@
 import React from 'react'
-import backgroundImage from "../assets/bg.png"
+import backgroundImage from "../images/bg.png"
 
 import Header from './Header'
 import Input from './Input'

@@ -1,5 +1,5 @@
 import React from 'react'
-import imageSrc from '../assets/logo.png'
+import imageSrc from '../images/logo.png'
 function Header() {
   return (
     <div className='flex flex-row items-center  justify-between pt-3 px-1 custom-sm:px-4 gap-5'>

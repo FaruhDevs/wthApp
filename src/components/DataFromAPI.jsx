@@ -1,5 +1,5 @@
 import React from 'react'
-import moonIcon from "../assets/splash-icon.svg"
+import moonIcon from "../images/splash-icon.svg"
 function DataFromAPI() {
   return (
     <div className=' flex flex-col pt-36 items-center gap-7'>
