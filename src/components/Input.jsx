@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 function Input() {
   const cities = [
-    'Amsterdam', 'Berlin', 'Copenhagen', 'Dublin', 'Edinburgh', 'Florence', 'Geneva', 'Hamburg', 'Istanbul', 'Jakarta'
+    'msterdam', 'Berlin', 'Copenhagen', 'Dublin', 'Edinburgh', 'Florence', 'Geneva', 'Hamburg', 'Istanbul', 'Jakarta'
   ];
   const [inputValue, setInputValue] = useState('');
   const [dropdownVisible, setDropdownVisible] = useState(false);
