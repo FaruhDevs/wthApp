@@ -11,9 +11,10 @@ function Main() {
       <div className="w-full sm:w-3/6 h-144 custom-sm:mt-0 sm:mt-7 custom-sm:mx-0 sm:mx-16 filter drop-shadow-lg border custom-sm:border-transparent sm:border-white rounded-lg"
         style={{ backgroundImage: `url(${backgroundImage})`, height: '650px', width: "1100px" }}>
         <Header />
-        <Input />
+        
+        <Input/>
         <div className='flex flex-col justify-center items-center'>
-        <DataFromAPI />
+          <DataFromAPI />
         </div>
       </div>
      
