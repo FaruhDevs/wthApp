@@ -133,7 +133,7 @@ function Input() {
           ref={inputRef}
           type="text"
         
-          className={` w-full mt-4 px-4 py-2 border  outline-none text-base rounded-md focus:border-blue-700 cursor-default`}
+          className={` ${ selectedCity ? "placeholder-slate-950 " : "placeholder-zinc-400"}  w-full mt-4 px-4 py-2 border  outline-none text-base rounded-md focus:border-blue-700 cursor-default`}
           placeholder={selectedCity ? selectedCity: "Search for cities"}
           value={inputValue}
           onChange={handleChange}
