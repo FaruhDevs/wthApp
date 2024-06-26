@@ -6,8 +6,10 @@ function Input() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState(null);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
+  const [loading, setLoading] = useState(true); // Add loading state
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
+  const timeoutId = useRef(null);
 
   useEffect(() => {
     // Fetch the city data from the JSON file
@@ -19,19 +21,20 @@ function Input() {
         return response.json();
       })
       .then(data => {
-        // Filter cities to include only those with unique names and country codes
         const filteredLetterCities = data.filter(city => isEnglishName(city.name));
         const filteredCities = filterUniqueCities(filteredLetterCities);
-
         setCities(filteredCities);
+        setLoading(false); // Set loading to false after cities are fetched
       })
-      .catch(error => console.error('Error fetching cities:', error));
+      .catch(error => {
+        console.error('Error fetching cities:', error);
+        setLoading(false); // Set loading to false even if there's an error
+      });
   }, []);
 
   const isEnglishName = (name) => {
     return /^[a-zA-Z\s]+$/.test(name);
   };
-
 
   const filterUniqueCities = (data) => {
     const uniqueCities = [];
@@ -51,25 +54,48 @@ function Input() {
     if (!dropdownVisible) {
       setHoveredIndex(-1); // Reset hovered index when dropdown opens
     }
+    
   };
 
   const handleBlur = () => {
-    setTimeout(() => {
-      if (!dropdownRef.current.contains(document.activeElement)) {
+    timeoutId.current = setTimeout(() => {
+      if (dropdownRef.current && !dropdownRef.current.contains(document.activeElement)) {
         setDropdownVisible(false);
         setHoveredIndex(-1); // Reset hovered index when dropdown closes
+        setInputValue("")
       }
     }, 100);
   };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutId.current); // Clear the timeout if the component unmounts
+    };
+  }, []);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
     if (!dropdownVisible) setDropdownVisible(true);
     setHoveredIndex(-1); // Reset hovered index when input value changes
+    
+    // Check if the input value matches any city names
+    const matches = cities.some(city => 
+      city.name.toLowerCase().startsWith(e.target.value.toLowerCase())
+    );
+    
+    // If no matches found, reset selectedCity and show default placeholder
+    if (!matches) {
+      setSelectedCity(null);
+      
+    }
   };
+  
 
   const handleFocus = () => {
+    
     setHoveredIndex(-1);
+   
+    
   };
 
   const handleKeyDown = (e) => {
@@ -91,7 +117,7 @@ function Input() {
       );
     } else if (e.key === 'Enter') {
       if (hoveredIndex !== -1) {
-        handleItemClick(filteredCities[hoveredIndex].name);
+        handleItemClick(filteredCities[hoveredIndex]);
       } else {
         // Handle case where Enter is pressed with no hovered item selected
         // You may add additional logic here if needed
@@ -114,12 +140,11 @@ function Input() {
     setHoveredIndex(-1); // Reset hovered index when mouse leaves dropdown
   };
 
-  const handleItemClick = (cityName) => {
-    setInputValue(cityName);
+  const handleItemClick = (city) => {
+    setInputValue('');
     setDropdownVisible(false);
-    setSelectedCity(cityName);
+    setSelectedCity(city);
     inputRef.current.focus(); // Return focus to the input after selecting an item
-    setInputValue("")
   };
 
   const filteredCities = cities.filter(city =>
@@ -132,9 +157,8 @@ function Input() {
         <input
           ref={inputRef}
           type="text"
-        
-          className={` ${ selectedCity ? "placeholder-slate-950 " : "placeholder-zinc-400"}  w-full mt-4 px-4 py-2 border  outline-none text-base rounded-md focus:border-blue-700 cursor-default`}
-          placeholder={selectedCity ? selectedCity: "Search for cities"}
+          className={` ${selectedCity ? "placeholder-slate-950 " : "placeholder-zinc-400"}  w-full mt-4 px-4 py-2 border  outline-none text-base rounded-md focus:border-blue-700 cursor-default`}
+          placeholder={selectedCity ? `${selectedCity.name}, ${selectedCity.country}` : "Search for cities"}
           value={inputValue}
           onChange={handleChange}
           onClick={toggleDropdown}
@@ -146,26 +170,38 @@ function Input() {
         <div onClick={toggleDropdown} className="absolute inset-y-0 right-6 flex items-center" style={{ top: '14px' }}>
           <div className="border-r-2 border-gray-300 h-6 mr-3"></div>
           <i className={`fas fa-caret-down text-slate-300 text-xl hover:text-slate-400 ${dropdownVisible ? "text-slate-500" : ""}`}></i>
+    
+          {loading &&
+            <i className="fa-solid fa-ellipsis  absolute inset-y-0 right-10 text-xl flex items-center"></i>
+          }
+          
         </div>
       </div>
 
       {dropdownVisible && (
         <ul
           ref={dropdownRef}
-          className="absolute left-3 right-3 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10"
+          className="absolute left-3 right-3 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 cursor-default"
           onMouseLeave={handleDropdownMouseLeave}
         >
-          {filteredCities.map((city, index) => (
-            <li
-              key={city.id}
-              className={`px-4 py-2 ${index === hoveredIndex ? 'bg-blue-100' : ''}`}
-              onMouseDown={() => handleItemClick(city.name)}
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
-            >
-              {city.name}, {city.country}
-            </li>
-          ))}
+          {loading ? (
+            <li className='text-center p-2 text-zinc-400 font-semibold'>Loading...</li>
+          ) : filteredCities.length > 0 ? (
+            filteredCities.map((city, index) => (
+              <li
+                key={city.id}
+                className={`px-4 py-2 ${index === hoveredIndex ? 'bg-blue-100' : ''} cursor-pointer`}
+                onMouseDown={() => handleItemClick(city)}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+                onClick={handleFocus}
+              >
+                {city.name}, {city.country}
+              </li>
+            ))
+          ) : (
+            <li className='text-center p-2 text-zinc-400 font-semibold' >No options</li>
+          )}
         </ul>
       )}
     </div>
@@ -173,4 +209,3 @@ function Input() {
 }
 
 export default Input;
-
