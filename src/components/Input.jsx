@@ -6,13 +6,13 @@ function Input() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState(null);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(false);
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
   const timeoutId = useRef(null);
+  const debounceTimeout = useRef(null);
 
   useEffect(() => {
-    // Fetch the city data from the JSON file
     fetch('./public/city.json')
       .then(response => {
         if (!response.ok) {
@@ -24,12 +24,18 @@ function Input() {
         const filteredLetterCities = data.filter(city => isEnglishName(city.name));
         const filteredCities = filterUniqueCities(filteredLetterCities);
         setCities(filteredCities);
-        setLoading(false); // Set loading to false after cities are fetched
       })
       .catch(error => {
         console.error('Error fetching cities:', error);
-        setLoading(false); // Set loading to false even if there's an error
       });
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const isEnglishName = (name) => {
@@ -42,7 +48,7 @@ function Input() {
     for (const city of data) {
       const key = city.name.toLowerCase() + city.country.toLowerCase();
       if (!map.has(key)) {
-        map.set(key, true); // Set any value to Map
+        map.set(key, true);
         uniqueCities.push(city);
       }
     }
@@ -52,50 +58,65 @@ function Input() {
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
     if (!dropdownVisible) {
-      setHoveredIndex(-1); // Reset hovered index when dropdown opens
+      setHoveredIndex(-1);
     }
-    
   };
 
   const handleBlur = () => {
     timeoutId.current = setTimeout(() => {
       if (dropdownRef.current && !dropdownRef.current.contains(document.activeElement)) {
         setDropdownVisible(false);
-        setHoveredIndex(-1); // Reset hovered index when dropdown closes
-        setInputValue("")
+        setHoveredIndex(-1);
+        if (!selectedCity && !cities.some(city => city.name.toLowerCase() === inputValue.toLowerCase())) {
+          setInputValue('');
+        }
       }
     }, 100);
   };
 
+  const handleClickOutside = (event) => {
+    if (inputRef.current && !inputRef.current.contains(event.target) &&
+        dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (!selectedCity && !cities.some(city => city.name.toLowerCase() === inputValue.toLowerCase())) {
+        setInputValue('');
+      }
+      setDropdownVisible(false);
+      setHoveredIndex(-1);
+    }
+  };
+
   useEffect(() => {
     return () => {
-      clearTimeout(timeoutId.current); // Clear the timeout if the component unmounts
+      clearTimeout(timeoutId.current);
+      clearTimeout(debounceTimeout.current);
     };
   }, []);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
-    if (!dropdownVisible) setDropdownVisible(true);
-    setHoveredIndex(-1); // Reset hovered index when input value changes
-    
-    // Check if the input value matches any city names
-    const matches = cities.some(city => 
-      city.name.toLowerCase().startsWith(e.target.value.toLowerCase())
-    );
-    
-    // If no matches found, reset selectedCity and show default placeholder
-    if (!matches) {
-      setSelectedCity(null);
-      
+    setLoading(true);
+
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
     }
+
+    debounceTimeout.current = setTimeout(() => {
+      setLoading(false);
+      setDropdownVisible(true);
+      setHoveredIndex(-1);
+
+      const matches = cities.some(city => 
+        city.name.toLowerCase().startsWith(e.target.value.toLowerCase())
+      );
+
+      if (!matches) {
+        setSelectedCity(null);
+      }
+    }, 500); // Adjust the debounce delay to control loading visibility duration
   };
-  
 
   const handleFocus = () => {
-    
     setHoveredIndex(-1);
-   
-    
   };
 
   const handleKeyDown = (e) => {
@@ -103,24 +124,21 @@ function Input() {
 
     const filteredCities = cities.filter(city =>
       city.name.toLowerCase().startsWith(inputValue.toLowerCase())
-    ).slice(0, 5); // Limit to 5 results
+    ).slice(0, 5);
 
     if (e.key === 'ArrowDown') {
-      e.preventDefault(); // Prevent default behavior of scrolling the page
+      e.preventDefault();
       setHoveredIndex(prevIndex =>
         prevIndex < filteredCities.length - 1 ? prevIndex + 1 : 0
       );
     } else if (e.key === 'ArrowUp') {
-      e.preventDefault(); // Prevent default behavior of scrolling the page
+      e.preventDefault();
       setHoveredIndex(prevIndex =>
         prevIndex > 0 ? prevIndex - 1 : filteredCities.length - 1
       );
     } else if (e.key === 'Enter') {
       if (hoveredIndex !== -1) {
         handleItemClick(filteredCities[hoveredIndex]);
-      } else {
-        // Handle case where Enter is pressed with no hovered item selected
-        // You may add additional logic here if needed
       }
     } else if (e.key === 'Escape') {
       setDropdownVisible(false);
@@ -133,23 +151,23 @@ function Input() {
   };
 
   const handleMouseLeave = () => {
-    setHoveredIndex(-1); // Reset hovered index when mouse leaves dropdown
+    setHoveredIndex(-1);
   };
 
   const handleDropdownMouseLeave = () => {
-    setHoveredIndex(-1); // Reset hovered index when mouse leaves dropdown
+    setHoveredIndex(-1);
   };
 
   const handleItemClick = (city) => {
     setInputValue('');
     setDropdownVisible(false);
     setSelectedCity(city);
-    inputRef.current.focus(); // Return focus to the input after selecting an item
+    inputRef.current.focus();
   };
 
   const filteredCities = cities.filter(city =>
     city.name.toLowerCase().startsWith(inputValue.toLowerCase())
-  ).slice(0, 5); // Limit to 5 results
+  ).slice(0, 5);
 
   return (
     <div className='relative'>
@@ -170,11 +188,14 @@ function Input() {
         <div onClick={toggleDropdown} className="absolute inset-y-0 right-6 flex items-center" style={{ top: '14px' }}>
           <div className="border-r-2 border-gray-300 h-6 mr-3"></div>
           <i className={`fas fa-caret-down text-slate-300 text-xl hover:text-slate-400 ${dropdownVisible ? "text-slate-500" : ""}`}></i>
-    
+
           {loading &&
-            <i className="fa-solid fa-ellipsis  absolute inset-y-0 right-10 text-xl flex items-center"></i>
+            <div className="loading absolute inset-y-0 right-10 flex items-center text-xl">
+              <i className="dot">.</i>
+              <i className="dot">.</i>
+              <i className="dot">.</i>
+            </div>
           }
-          
         </div>
       </div>
 
@@ -200,7 +221,7 @@ function Input() {
               </li>
             ))
           ) : (
-            <li className='text-center p-2 text-zinc-400 font-semibold' >No options</li>
+            <li className='text-center p-2 text-zinc-400 font-semibold'>No options</li>
           )}
         </ul>
       )}

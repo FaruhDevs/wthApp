@@ -2,29 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 @keyframes ellipsis {
-    0% {
-      color: #aaa;
-    }
-    33% {
-      color: #666;
-    }
-    66% {
-      color: #333;
-    }
-    100% {
-      color: #aaa;
-    }
+  0% {
+    color: #aaa;
   }
-  
-  .loading {
-    display: flex;
-    align-items: center;
+  33% {
+    color: #666;
   }
-  
-  .loading .dot {
-    animation: ellipsis 1s infinite;
+  66% {
+    color: #918c8c;
   }
-  
+  100% {
+    color: #aaa;
+  }
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+}
+
+.loading .dot {
+  animation: ellipsis 1s infinite;
+}
+
+.loading .dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading .dot:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.loading .dot:nth-child(3) {
+  animation-delay: 1s;
+}
+
 
   
   
