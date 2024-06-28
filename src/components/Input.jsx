@@ -6,7 +6,7 @@ function Input() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState(null);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
   const timeoutId = useRef(null);
@@ -24,19 +24,14 @@ function Input() {
         const filteredLetterCities = data.filter(city => isEnglishName(city.name));
         const filteredCities = filterUniqueCities(filteredLetterCities);
         setCities(filteredCities);
+        setLoading(false)
       })
       .catch(error => {
         console.error('Error fetching cities:', error);
       });
   }, []);
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   const isEnglishName = (name) => {
     return /^[a-zA-Z\s]+$/.test(name);
@@ -57,6 +52,11 @@ function Input() {
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
+    
+
+    
+    
+    
     if (!dropdownVisible) {
       setHoveredIndex(-1);
     }
@@ -67,23 +67,12 @@ function Input() {
       if (dropdownRef.current && !dropdownRef.current.contains(document.activeElement)) {
         setDropdownVisible(false);
         setHoveredIndex(-1);
-        if (!selectedCity && !cities.some(city => city.name.toLowerCase() === inputValue.toLowerCase())) {
-          setInputValue('');
-        }
+        
       }
     }, 100);
   };
 
-  const handleClickOutside = (event) => {
-    if (inputRef.current && !inputRef.current.contains(event.target) &&
-        dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      if (!selectedCity && !cities.some(city => city.name.toLowerCase() === inputValue.toLowerCase())) {
-        setInputValue('');
-      }
-      setDropdownVisible(false);
-      setHoveredIndex(-1);
-    }
-  };
+ 
 
   useEffect(() => {
     return () => {
@@ -105,13 +94,7 @@ function Input() {
       setDropdownVisible(true);
       setHoveredIndex(-1);
 
-      const matches = cities.some(city => 
-        city.name.toLowerCase().startsWith(e.target.value.toLowerCase())
-      );
-
-      if (!matches) {
-        setSelectedCity(null);
-      }
+      
     }, 500); // Adjust the debounce delay to control loading visibility duration
   };
 
@@ -175,7 +158,7 @@ function Input() {
         <input
           ref={inputRef}
           type="text"
-          className={` ${selectedCity ? "placeholder-slate-950 " : "placeholder-zinc-400"}  w-full mt-4 px-4 py-2 border  outline-none text-base rounded-md focus:border-blue-700 cursor-default`}
+          className={` ${selectedCity ? "placeholder-slate-950 " : "placeholder-zinc-400"}    w-full mt-4 px-4 py-2 border  outline-none text-base rounded-md focus:border-blue-700 cursor-default`}
           placeholder={selectedCity ? `${selectedCity.name}, ${selectedCity.country}` : "Search for cities"}
           value={inputValue}
           onChange={handleChange}
@@ -189,8 +172,8 @@ function Input() {
           <div className="border-r-2 border-gray-300 h-6 mr-3"></div>
           <i className={`fas fa-caret-down text-slate-300 text-xl hover:text-slate-400 ${dropdownVisible ? "text-slate-500" : ""}`}></i>
 
-          {loading &&
-            <div className="loading absolute inset-y-0 right-10 flex items-center text-xl">
+          {loading && filteredCities.length>0 &&
+            <div className="loading absolute inset-y-0 right-9 mb-5 flex items-center text-3xl">
               <i className="dot">.</i>
               <i className="dot">.</i>
               <i className="dot">.</i>
@@ -211,11 +194,11 @@ function Input() {
             filteredCities.map((city, index) => (
               <li
                 key={city.id}
-                className={`px-4 py-2 ${index === hoveredIndex ? 'bg-blue-100' : ''} cursor-pointer`}
+                className={`px-4 py-2 ${index === hoveredIndex ? 'bg-blue-100' : ''}    ${selectedCity && selectedCity.name === city.name ? 'bg-blue-100' : ''}    cursor-default`}
                 onMouseDown={() => handleItemClick(city)}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}
-                onClick={handleFocus}
+               
               >
                 {city.name}, {city.country}
               </li>
