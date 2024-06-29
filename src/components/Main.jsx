@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react';
 import backgroundImage from "../images/bg.png"
 
 import Header from './Header'
 import Input from './Input'
 import DataFromAPI from './DataFromAPI'
 function Main() {
+  const [selectedCity, setSelectedCity] = useState(null);
   return (
     
       <div className="flex  justify-center bg-gradient-to-r from-blue-950 to-blue-500" style={{ minHeight: '100vh' }}>
@@ -12,10 +13,12 @@ function Main() {
         style={{ backgroundImage: `url(${backgroundImage})`, height: '650px', width: "1100px" }}>
         <Header />
         
-        <Input/>
+        <Input selectedCity={selectedCity} setSelectedCity={setSelectedCity}/>
         <div className='flex flex-col justify-center items-center'>
-          <DataFromAPI />
+          <DataFromAPI selectedCity={selectedCity} />
         </div>
+          
+        
       </div>
      
     </div>

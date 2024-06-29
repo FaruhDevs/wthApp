@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-function Input() {
+import DataFromAPI from './DataFromAPI';
+function Input({selectedCity,setSelectedCity}) {
   const [cities, setCities] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [selectedCity, setSelectedCity] = useState(null);
+  
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [loading, setLoading] = useState(true);
   const dropdownRef = useRef(null);
@@ -208,6 +208,7 @@ function Input() {
           )}
         </ul>
       )}
+      
     </div>
   );
 }
