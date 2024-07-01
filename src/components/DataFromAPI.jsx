@@ -1,11 +1,11 @@
 import React from 'react'
 import moonIcon from "../images/splash-icon.svg"
-import OpenWeatherAPI from "./OpenWeatherAPI"
-function DataFromAPI({selectedCity}) {
+import FetchingData from './FetchingData'
+function DataFromAPI({selectedCity,setSelectedCity}) {
   return (
     <div className=' '>
       {selectedCity ? 
-        (<OpenWeatherAPI selectedCity={selectedCity}/>) : 
+        (<FetchingData selectedCity={selectedCity} setSelectedCity={setSelectedCity}/>) : 
         (<div className='flex flex-col  items-center gap-4 pt-36'>
          
         <img src={moonIcon} className='w-24 h-24 md:w-36 md:h-40' alt="" />

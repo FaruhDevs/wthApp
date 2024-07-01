@@ -13,7 +13,7 @@ function Main() {
         style={{ backgroundImage: `url(${backgroundImage})`, height: '650px', width: "1100px" }}>
         <Header /> 
         <Input selectedCity={selectedCity} setSelectedCity={setSelectedCity}/>
-        <DataFromAPI selectedCity={selectedCity} />
+        <DataFromAPI selectedCity={selectedCity} setSelectedCity={setSelectedCity} />
        
           
         
