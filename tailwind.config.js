@@ -7,6 +7,13 @@ module.exports = {
       colors: {
         'blue-950': '#001f3f', // Replace with your desired hex code
       },
+      fontSize: {
+        'xxs': '0.625rem', // This is 10px
+      },
+      width: {
+        'custom-1': '9.2rem', // Custom width class
+        
+      },
     },
   },
   variants: {},

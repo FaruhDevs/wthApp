@@ -5,6 +5,7 @@ import OpenWeatherAPI from './OpenWeatherAPI'
 function FetchingData({selectedCity,setSelectedCity}) {
     const [weatherData, setWeatherData] = useState(null);
     const [forecastData, setForecastData] = useState(null);
+    const [loading, setLoading] = useState(true);
     const apiKey = '499138f5484a73cfaff5e1a227f2c05a';
 
 
@@ -30,7 +31,7 @@ function FetchingData({selectedCity,setSelectedCity}) {
                   units: 'metric' // or 'imperial' if you prefer
                 }
               });
-              console.log(response.data)
+       
               setWeatherData(response.data);
               const forecastResponse = await axios.get('https://api.openweathermap.org/data/3.0/onecall', {
                 params: {
@@ -41,8 +42,10 @@ function FetchingData({selectedCity,setSelectedCity}) {
                 }
               });
               
-              setForecastData(forecastResponse.data);
-    
+              const sixHourForecast = forecastResponse.data?.hourly?.filter((_, index) => index % 3 === 0).slice(0, 6) ?? [];
+              setForecastData(sixHourForecast);
+              setLoading(false)
+              console.log(sixHourForecast)
               
             } catch (error) {
                 console.error('Error fetching the weather data', error.response ? error.response.data : error);
@@ -66,6 +69,8 @@ function FetchingData({selectedCity,setSelectedCity}) {
         weatherWind={weatherData.wind.speed}
         weatherClouds={weatherData.clouds.all}
         weatherIcon={weatherData.weather[0].icon}
+        sixHourForecast={forecastData}
+        sixHourLoading={loading}
         />):
         (<p>Loadingssssssssssssssssssssssss</p>)}
     </>

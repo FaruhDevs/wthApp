@@ -1,14 +1,14 @@
 import React from 'react'
 import moonIcon from "../images/splash-icon.svg"
 
-function OpenWeatherAPI({ selectedCity,weatherTemp,weatherDisc,todayDate,weatherFeel,weatherHumidity,weatherWind, weatherClouds,weatherIcon }) {
+function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, weatherFeel, weatherHumidity, weatherWind, weatherClouds, weatherIcon, sixHourForecast,sixHourLoading }) {
     const iconUrl = `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2   max-w-[1055px] max-h-[2000px] m-5'>
             <div className='flex flex-col   items-center '>
-                
+
                 <p className='text-zinc-300 font-medium text-xs sm:text-lg mb-5 mt-4'>CURRENT WEATHER</p>
-                
+
                 <div className='grid grid-cols-3 items-center gap-24 mb-9 ml-9'>
 
                     <div className='flex flex-col items-center justify-center gap-1 '>
@@ -26,8 +26,8 @@ function OpenWeatherAPI({ selectedCity,weatherTemp,weatherDisc,todayDate,weather
                 </div>
 
                 <p className='text-zinc-300 font-medium text-xs sm:text-lg mb-5'>AIR CONDITIONS</p>
-                
-                <div className='grid grid-cols-4 items-center gap-24 mb-12 ml-6 mr-6'>
+
+                <div className='grid grid-cols-4 items-center gap-24 mb-8 ml-6 mr-6'>
 
                     <div className='flex flex-col items-center justify-center  '>
                         <div className="flex flex-row items-center justify-center gap-3 mb-5">
@@ -36,13 +36,13 @@ function OpenWeatherAPI({ selectedCity,weatherTemp,weatherDisc,todayDate,weather
                         </div>
                         <p className='text-sm sm:text-lg font-medium text-white text-center whitespace-nowrap'>{weatherFeel}°C</p>
                     </div>
-                    
+
                     <div className='flex flex-col items-center justify-center  '>
                         <div className="flex flex-row items-center justify-center gap-3 mb-5">
                             <i className="fa-solid fa-wind text-white text-xl"></i>
                             <p className='text-white text-xs sm:text-sm sm:font-normal whitespace-nowrap'>Wind</p>
                         </div>
-                        <p className='text-sm sm:text-lg font-medium text-white text-center whitespace-nowrap'>{weatherWind}m/s</p>
+                        <p className='text-sm sm:text-lg font-medium text-white text-center whitespace-nowrap'>{weatherWind} m/s</p>
                     </div>
 
                     <div className='flex flex-col items-center justify-center  '>
@@ -62,22 +62,33 @@ function OpenWeatherAPI({ selectedCity,weatherTemp,weatherDisc,todayDate,weather
                     </div>
                 </div>
 
-                
-                <div className='flex flex-col justify-center items-center'>
-                    <p className='text-zinc-300 font-medium text-xs sm:text-lg mb-0'>AIR CONDITIONS</p> 
-                    <p className='text-cyan-500 font-medium text-xs '>1 available forecast</p> 
-                    <div className='flex flex-row justify-center items-center mt-3 '>
-                        <div className=' w-20 h-24   bg-white bg-opacity-10 backdrop-blur-md border border-white/20 rounded-lg shadow-lg p-6'>
-                            <p>15:00</p>
-                            <p>150</p>
-                        </div> 
-                    </div>
-                </div>
-                
+                <p className='text-zinc-300 font-medium text-xs sm:text-lg '>AIR CONDITIONS</p>
+                <p className='text-cyan-500 font-medium text-xs '>6 available forecasts</p>
+-
+                {sixHourLoading ? (<p>Loading</p>) :<div className='grid grid-cols-3 sm:grid-cols-6  gap-y-5 gap-x-2 sm:gap-x-1'>
+                    {sixHourForecast.map((forecast, index) => (
+                        <div key={index} className={`w-custom-1 h-24 sm:w-20  ${index===0 ? ("bg-slate-950") :("bg-blue-100") } bg-opacity-5 backdrop-blur-md border border-white/0 rounded-lg shadow-lg p-1`}>
+                            <p className='text-white text-xxs sm:text-xs text-center mb-3'>
+                                {new Date(forecast.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                            <div className='relative justify-center items-center flex '>
+                                <img
+                                    src={`http://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`}
+                                    className='w-12 h-12 md:w-24 md:h-22 object-cover object-center'
+                                    alt={forecast.weather[0].description}
+                                />
+                                <p className='text-white text-center text-base font-semibold absolute -bottom-4 left-0 right-0'>
+                                    {Math.round(forecast.temp)}°C
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>}
+
 
 
             </div>
-            
+
 
             <div className='flex flex-col  justify-center items-center'>
                 <div>CURRENT WEATHER</div>
@@ -85,7 +96,7 @@ function OpenWeatherAPI({ selectedCity,weatherTemp,weatherDisc,todayDate,weather
                 <div>TODAY'S FORECAST</div>
 
             </div>
-
+            
         </div>
     )
 }
