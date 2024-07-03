@@ -12,6 +12,13 @@ module.exports = {
       },
       width: {
         'custom-1': '9.2rem', // Custom width class
+        "custom-2":"520px",
+        "custom-3":"500px"
+        
+      },
+      height: {
+        'height-1': '4.25rem', // Custom width class
+ 
         
       },
     },
