@@ -19,6 +19,7 @@ function Main() {
     >
       <Header />
       <Input selectedCity={selectedCity} setSelectedCity={setSelectedCity} />
+      
       <DataFromAPI selectedCity={selectedCity} setSelectedCity={setSelectedCity} />
     </div>
   </div>

@@ -52,6 +52,9 @@ function Input({selectedCity,setSelectedCity}) {
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
+    if (inputValue.trim() !== '') {
+      setInputValue('');
+    }
     
 
     
@@ -68,8 +71,12 @@ function Input({selectedCity,setSelectedCity}) {
         setDropdownVisible(false);
         setHoveredIndex(-1);
         
+        // Check if input value is not empty, then clear it
+        if (inputValue.trim() !== '') {
+          setInputValue('');
+        }
       }
-    }, 100);
+    }, 50);
   };
 
  

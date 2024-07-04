@@ -51,7 +51,7 @@ function FetchingData({ selectedCity, setSelectedCity }) {
           
           setForecastData(sixHourForecast);
           setLoading(false)
-          console.log(dailyForecast)
+          console.log(forecastResponse.data)
 
         } catch (error) {
           console.error('Error fetching the weather data', error.response ? error.response.data : error);
@@ -64,7 +64,7 @@ function FetchingData({ selectedCity, setSelectedCity }) {
 
 
   return (
-    <>
+    <div>
       {weatherData ? (<OpenWeatherAPI
         selectedCity={selectedCity}
         weatherTemp={Math.round(weatherData.main.temp)}
@@ -79,8 +79,11 @@ function FetchingData({ selectedCity, setSelectedCity }) {
         sixHourLoading={loading}
         dailyForecast={dailyForecast}
       />) :
-        (<p>Loadingssssssssssssssssssssssss</p>)}
-    </>
+        (<div className="flex flex-col p-56 justify-center items-center">
+          <i className="fa-solid fa-spinner fa-spin text-2xl text-white gap-y-60"></i>
+          <p className='text-white text-xl'>Loading...</p>
+        </div>)}
+    </div>
 
   )
 }
