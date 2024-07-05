@@ -13,7 +13,7 @@ function Main() {
 
       className="
         w-full sm:w-7/12 custom-sm:mt-0 sm:mt-7 custom-sm:mx-0 sm:mx-16
-        filter drop-shadow-lg border  custom-sm:border-transparent sm:border-white/20 
+        filter  border  border-transparent  sm:border-white/20 
         rounded-lg h-[1170px] sm:h-[650px]"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
