@@ -7,7 +7,7 @@ function FetchingData({ selectedCity, setSelectedCity }) {
   const [forecastData, setForecastData] = useState(null);
   const [dailyForecast, setDailyForecast] = useState(null);
   const [loading, setLoading] = useState(true);
-  const apiKey = '499138f5484a73cfaff5e1a227f2c05a';
+  const apiKey = import.meta.env.VITE_WEATHERAPI;
 
 
   const getCurrentDate = () => {
