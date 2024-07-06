@@ -17,7 +17,7 @@ function Header() {
       <img className='w-24 h-4 md:w-36 md:h-7' src={imageSrc} />
       <p className='text-slate-300 text-xs md:text-sm font-semibold'>{getFormattedDate()}</p>
       <a href="https://github.com/FaruhDevs/wthApp" target="_blank" rel="noopener noreferrer">
-        <i className="fa-brands fa-github md:text-2xl text-xl text-white"></i>
+        <i className="fa-brands fa-github md:text-2xl text-xl text-white custom-xsm:mr-3"></i>
       </a>
     </div>
 

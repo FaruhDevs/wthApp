@@ -3,6 +3,7 @@ module.exports = {
     extend: {
       screens: {
         'custom-sm': '460px',
+        "custom-xsm":"360px",
       },
       colors: {
         'blue-950': '#001f3f', // Replace with your desired hex code
@@ -13,13 +14,17 @@ module.exports = {
       width: {
         'custom-1': '9.2rem', // Custom width class
         "custom-2":"520px",
-        "custom-3":"500px"
+        "custom-3":"500px",
+        "17":"4.25rem"
         
       },
       height: {
         'height-1': '4.25rem', // Custom width class
  
         
+      },
+      gap: {
+        '17': '4.25rem', // Define the custom gap value here
       },
     },
   },

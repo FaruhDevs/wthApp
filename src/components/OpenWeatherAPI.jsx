@@ -10,7 +10,7 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
         return days[date.getDay()];
     }
     return (
-        <div className='grid grid-cols-1 sm:grid-cols-2   max-w-[1055px] max-h-[2000px] m-5'>
+        <div className='grid  grid-cols-1 lg:grid-cols-2   max-w-[1055px] max-h-[2000px] m-5'>
             <div className='flex flex-col   items-center '>
 
                 <p className='text-zinc-300 font-medium text-xs sm:text-lg mb-5 mt-4'>CURRENT WEATHER</p>
@@ -19,7 +19,7 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
 
                     <div className='flex flex-col items-center justify-center gap-1 '>
                         <p className='text-sm sm:text-lg font-medium text-white text-center w-[150px]'>{selectedCity.name}, {selectedCity.country}</p>
-                        <p className='text-zinc-400 text-xs sm:text-sm sm:font-medium'>Today {todayDate}</p>
+                        <p className='text-zinc-400 text-xs sm:text-sm sm:font-medium custom-xsm:text-center'>Today {todayDate}</p>
                     </div>
 
                     <div className='flex flex-col items-center justify-center gap-1 '>
@@ -33,10 +33,10 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
 
                 <p className='text-zinc-300 font-medium text-xs sm:text-lg mb-5'>AIR CONDITIONS</p>
 
-                <div className='grid grid-cols-4 items-center gap-24 mb-8 ml-10 mr-10'>
+                <div className='grid grid-cols-4 items-center gap-24 mb-8 ml-10 mr-10 custom-xsm:gap-17'>
 
                     <div className='flex flex-col items-center justify-center  '>
-                        <div className="flex flex-row items-center justify-center gap-3 mb-5">
+                        <div className="flex flex-row items-center justify-center gap-3 custom-xsm:gap-1  mb-5">
                             <i className="fa-solid fa-temperature-half text-white text-xl"></i>
                             <p className='text-white text-xs sm:text-sm sm:font-normal whitespace-nowrap'>Real Feel</p>
                         </div>
@@ -44,7 +44,7 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
                     </div>
 
                     <div className='flex flex-col items-center justify-center  '>
-                        <div className="flex flex-row items-center justify-center gap-3 mb-5">
+                        <div className="flex flex-row items-center justify-center gap-3 custom-xsm:gap-1 mb-5">
                             <i className="fa-solid fa-wind text-white text-xl"></i>
                             <p className='text-white text-xs sm:text-sm sm:font-normal whitespace-nowrap'>Wind</p>
                         </div>
@@ -52,7 +52,7 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
                     </div>
 
                     <div className='flex flex-col items-center justify-center  '>
-                        <div className="flex flex-row items-center justify-center gap-3 mb-5">
+                        <div className="flex flex-row items-center justify-center gap-3 custom-xsm:gap-1 mb-5">
                             <i className="fa-solid fa-cloud text-white text-xl"></i>
                             <p className='text-white text-xs sm:text-sm sm:font-normal whitespace-nowrap'>Clouds</p>
                         </div>
@@ -60,7 +60,7 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
                     </div>
 
                     <div className='flex flex-col items-center justify-center  '>
-                        <div className="flex flex-row items-center justify-center gap-3 mb-5">
+                        <div className="flex flex-row items-center justify-center gap-3 custom-xsm:gap-1 mb-5">
                             <i className="fa-solid fa-droplet text-white text-xl"></i>
                             <p className='text-white text-xs sm:text-sm sm:font-normal whitespace-nowrap'>Humidity</p>
                         </div>
@@ -69,7 +69,7 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
                 </div>
 
 
-                <p className='text-zinc-300 font-medium text-xs sm:text-lg '>AIR CONDITIONS</p>
+                <p className='text-zinc-300 font-medium text-xs sm:text-lg '>TODAY'S FORECAST</p>
                 <p className='text-cyan-500 font-medium text-xs mb-3'>6 available forecasts</p>
 
                 {sixHourLoading ? (<div className='backdrop-blur-md border border-amber-500 rounded-xl shadow-lg text-amber-500 font-medium w-96 h-24 flex items-center justify-center'>Service currently unavailable,please try later.</div>)
@@ -78,9 +78,9 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
 
 
 
-                    : <div className='grid grid-cols-3 sm:grid-cols-6  gap-y-5 gap-x-2 sm:gap-x-1 mb-6'>
+                    : <div className='grid grid-cols-3 sm:grid-cols-6  gap-y-5 gap-x-2 sm:gap-x-4  mb-6 '>
                         {sixHourForecast.map((forecast, index) => (
-                            <div key={index} className={`w-custom-1 h-24 sm:w-20  ${index === 0 ? ("bg-slate-50 bg-opacity-15") : ("bg-blue-300 bg-opacity-5")}  backdrop-blur-md border border-white/0 rounded-lg shadow-lg p-1`}>
+                            <div key={index} className={`w-custom-1 h-24 sm:w-17 custom-xsm:w-20  ${index === 0 ? ("bg-slate-50 bg-opacity-15") : ("bg-blue-300 bg-opacity-5")}  backdrop-blur-md border border-white/0 rounded-lg shadow-lg p-1`}>
                                 <p className='text-white text-xxs sm:text-xs text-center mb-3'>
                                     {new Date(forecast.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </p>
@@ -113,10 +113,10 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
 
                     : <div className='flex flex-col  gap-y-1  '>
                         {dailyForecast.map((forecast, index) => (
-                            <div key={index} className={`sm:w-custom-2 h-16
+                            <div key={index} className={` h-16
                            bg-blue-100 bg-opacity-5 backdrop-blur-md border border-white/0 rounded-lg shadow-lg p-1`}>
                                 <div className='grid grid-cols-3 justify-items-center items-center   '>
-                                    <div className='flex flex-col items-center justify-center mr-14'>
+                                    <div className='flex flex-col items-center justify-center custom-xsm:-ml-4'>
                                         <p className='text-white font-medium text-sm sm:text-base'>{getDayOfWeek(forecast.dt)}</p>
                                         <div className='flex flex-row items-center justify-center  -mr-4 -mt-2 w-72'>
                                             <img
@@ -129,7 +129,7 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
 
                                     </div>
 
-                                    <div className='grid grid-rows-2 items-center justify-center mr-1 gap-2 -mt-2'>
+                                    <div className='grid grid-rows-2 items-center justify-center mr-1 custom-xsm:ml-7 gap-2 -mt-2'>
                                         <div className="flex items-center justify-center gap-3 ">
                                             <i className="fa-solid fa-temperature-half text-white text-sm"></i>
                                             <p className=' text-sm  sm:font-medium font-normal text-white text-center whitespace-nowrap'>{Math.round(forecast.temp.day)}°C</p>
@@ -141,7 +141,7 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
                                         </div>
                                     </div>
 
-                                    <div className='grid grid-rows-2 items-center justify-center mr-1 gap-2 -mt-2'>
+                                    <div className='grid grid-rows-2 items-center justify-center mr-1 gap-2 custom-xsm:ml-7 -mt-2'>
                                         <div className="flex items-center justify-center gap-2  ">
                                             <i className="fa-solid fa-wind text-white text-sm"></i>
                                             <p className='text-sm  sm:font-medium font-normal text-white text-center whitespace-nowrap'>{forecast.wind_speed}m/s</p>
