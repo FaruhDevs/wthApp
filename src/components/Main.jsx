@@ -12,7 +12,7 @@ function Main() {
     <div
 
       className={`
-        md:w-7/12 custom-sm:mt-0 sm:mt-7 custom-sm:mx-0 sm:mx-16
+         w-full md:w-7/12 lg:w-11/12 custom-sm:mt-0 sm:mt-7 custom-sm:mx-0 sm:mx-16
         filter  border  border-transparent  sm:border-white/20 
         rounded-lg  lg:h-[650px] ${selectedCity? "h-[1170px]" :"custom-xsm:h-screen"} `}
       style={{ backgroundImage: `url(${backgroundImage})` }}

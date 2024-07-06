@@ -10,7 +10,7 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
         return days[date.getDay()];
     }
     return (
-        <div className='grid  grid-cols-1 lg:grid-cols-2   max-w-[1055px] max-h-[2000px] m-5'>
+        <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2   max-w-[1055px] max-h-[2000px] m-5'>
             <div className='flex flex-col   items-center '>
 
                 <p className='text-zinc-300 font-medium text-xs sm:text-lg mb-5 mt-4'>CURRENT WEATHER</p>
@@ -78,7 +78,7 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
 
 
 
-                    : <div className='grid grid-cols-3 sm:grid-cols-6  gap-y-5 gap-x-2 sm:gap-x-4  mb-6 '>
+                    : <div className='grid grid-cols-3 sm:grid-cols-6  gap-y-5 gap-x-2 md:gap-x-2   mb-6 '>
                         {sixHourForecast.map((forecast, index) => (
                             <div key={index} className={`w-custom-1 h-24 sm:w-17 custom-xsm:w-20  ${index === 0 ? ("bg-slate-50 bg-opacity-15") : ("bg-blue-300 bg-opacity-5")}  backdrop-blur-md border border-white/0 rounded-lg shadow-lg p-1`}>
                                 <p className='text-white text-xxs sm:text-xs text-center mb-3'>
@@ -103,7 +103,7 @@ function OpenWeatherAPI({ selectedCity, weatherTemp, weatherDisc, todayDate, wea
             </div>
 
 
-            <div className='grid grid-cols-1   '>
+            <div className='grid grid-cols-1   md:ml-10'>
                 <p className='text-zinc-300 font-medium text-xs sm:text-lg mb-3 sm:mb-3 mt-4 text-center '>WEEKLY FORECAST</p>
                 {sixHourLoading ?
                     (<div className='backdrop-blur-md border border-amber-500 rounded-xl shadow-lg text-amber-500 font-medium w-96 h-24 flex  items-center justify-center ml-7 sm:ml-14 mb-60'>Service currently unavailable,please try later.</div>)
