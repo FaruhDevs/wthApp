@@ -13,7 +13,7 @@ function Input({selectedCity,setSelectedCity}) {
   const debounceTimeout = useRef(null);
 
   useEffect(() => {
-    fetch('./public/city.json')
+    fetch('/city.json')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
